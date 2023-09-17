@@ -1,6 +1,7 @@
 
 import express from "express";
 import "./config/mongoose";
+import { PORT } from './config';
 
 import productRoutes from "./routes/products.routes"
 
@@ -15,5 +16,5 @@ app.use(productRoutes);
 
 
 //Iniciamos el servidor 
-app.listen(3000);
-console.log("Servidor escuchando en el puerto: ", 3000);
+app.listen(PORT);
+console.log("Servidor escuchando en el puerto: ", PORT);
