@@ -1,11 +1,19 @@
 
-import app from "./app.js";
-import { connectDB } from "./db.js";
+import express from "express";
+import "./config/mongoose";
+
+import productRoutes from "./routes/products.routes"
 
 
-//Primero nos conectamos a la base de datos
-connectDB();
+
+const app = express();
+
+app.use(express.json());
+
+app.use(productRoutes);
+
+
 
 //Iniciamos el servidor 
-app.listen(4000);
-console.log("Servidor escuchando en el puerto: ", 4000);
+app.listen(3000);
+console.log("Servidor escuchando en el puerto: ", 3000);
