@@ -5,6 +5,7 @@ import { PORT } from './config';
 import cors from 'cors';
 
 import productRoutes from "./routes/products.routes"
+import authRoutes from "./routes/auth.routes"
 
 
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use(productRoutes);
+app.use(authRoutes);
 
 
 

@@ -1,32 +1,69 @@
-import  { createContext, useEffect, useReducer } from 'react'
-import { getProducts } from '../../api/productsApi'
+import { createContext, useEffect, useReducer, useContext } from "react";
+import { getProducts, saveProduct } from "../../api/productsApi";
 import { productsReducer, initialState } from "../reducer/productsReducer";
-import { productActions } from '../actions/productsActions';
-
+import { productActions } from "../actions/productsActions";
 
 export const ProductContext = createContext(initialState);
 
-export const ProductProvider = ({children}) => {
+export const useProducts = () => {
+  const context = useContext(ProductContext);
+  return context;
+};
 
-    const [state, dispatch] = useReducer(productsReducer, initialState);
+export const ProductProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(productsReducer, initialState);
 
-    const loadProducts = async () => {
-        dispatch({type: productActions.LOAD_PRODUCTS})
-       const res = await getProducts();
-       if(res.data){
+  const loadProducts = async () => {
+    dispatch({ type: productActions.LOAD_PRODUCTS });
+    try {
+      const res = await getProducts();
+      if (res.data) {
         dispatch({
-            type: productActions.LOAD_PRODUCTS_SUCCESS,
-            payload: res.data
-           });   
-       }
+          type: productActions.LOAD_PRODUCTS_SUCCESS,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: productActions.LOAD_PRODUCTS_ERROR,
+        payload: error.message,
+      });
     }
+  };
 
+  useEffect(() => {
+    loadProducts();
+  }, []);
 
-    useEffect(() => {
-        loadProducts();
-    },[]);
+  const addNewProduct = async (newProduct) => {
 
-    return (<ProductContext.Provider value={{...state, getProducts}}>
-        {children}
-    </ProductContext.Provider>)
+    dispatch({ type: productActions.LOAD_SAVE_PRODUCT });
+    try {
+        const res = await saveProduct(newProduct);
+
+        if (res.data) {
+          dispatch({
+            type: productActions.LOAD_SAVE_PRODUCT_SUCESS,
+            payload: res.data,
+          });
+        }
+        
+    } catch (error) {
+        console.log(error);
+        dispatch({
+            type: productActions.LOAD_SAVE_PRODUCT_ERROR,
+            payload: error.message,
+        })
+        
+    }
 }
+
+ 
+
+  return (
+    <ProductContext.Provider value={{ ...state, getProducts, addNewProduct }}>
+      {children}
+    </ProductContext.Provider>
+  );
+};
