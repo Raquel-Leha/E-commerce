@@ -7,8 +7,8 @@ const router = Router();
 
 
 
-router.post('auth/signin', signIn);
-router.post('auth/signup', signUp);
-router.post('auth/profile', verifyToken, profile);
+router.post('/auth/signin', signIn);
+router.post('/auth/signup', signUp);
+router.post('/auth/profile', verifyToken, profile);
 
 export default router;

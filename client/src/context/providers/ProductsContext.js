@@ -37,29 +37,24 @@ export const ProductProvider = ({ children }) => {
   }, []);
 
   const addNewProduct = async (newProduct) => {
-
     dispatch({ type: productActions.LOAD_SAVE_PRODUCT });
     try {
-        const res = await saveProduct(newProduct);
+      const res = await saveProduct(newProduct);
 
-        if (res.data) {
-          dispatch({
-            type: productActions.LOAD_SAVE_PRODUCT_SUCESS,
-            payload: res.data,
-          });
-        }
-        
-    } catch (error) {
-        console.log(error);
+      if (res.data) {
         dispatch({
-            type: productActions.LOAD_SAVE_PRODUCT_ERROR,
-            payload: error.message,
-        })
-        
+          type: productActions.LOAD_SAVE_PRODUCT_SUCESS,
+          payload: res.data,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: productActions.LOAD_SAVE_PRODUCT_ERROR,
+        payload: error.message,
+      });
     }
-}
-
- 
+  };
 
   return (
     <ProductContext.Provider value={{ ...state, getProducts, addNewProduct }}>

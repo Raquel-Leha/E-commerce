@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import {useProducts} from '../../context/providers/ProductsContext'
-
+import { useProducts } from "../../context/providers/ProductsContext";
+import Spinner from "../../components/ui/Spinner";
 
 const ProductForm = () => {
-  const{ addNewProduct, isLoading } = useProducts();
- 
+  const { addNewProduct, isLoading } = useProducts();
+
   const [product, setProduct] = useState({
     name: "",
     description: "",
@@ -30,7 +30,14 @@ const ProductForm = () => {
                 className="btn btn-primary"
                 disabled={!product.name && isLoading}
               >
-                Guardar
+                {isLoading ? (
+                  <>
+                    <Spinner />
+                    <span className="ms-2">Cargando...</span>
+                  </>
+                ) : (
+                  <span>Guardar</span>
+                )}
               </button>
             </div>
             <div className="col-md-8">
